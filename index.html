@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Facebook Login</title>
+    <title>Firmaturstemning</title>
 </head>
 <body>
     <div id="fb-root"></div>
@@ -9,14 +9,14 @@
     <script>
       window.fbAsyncInit = function() {
         FB.init({
-          appId      : '1139701013935835', // Zamień na swój App ID
+          appId      : '1139701013935835', // Bytt ut med din App ID
           cookie     : true,
           xfbml      : true,
           version    : 'v10.0'
         });
 
         FB.AppEvents.logPageView();   
-
+        checkLoginState();
       };
 
       (function(d, s, id){
@@ -26,9 +26,110 @@
          js.src = "https://connect.facebook.net/en_US/sdk.js";
          fjs.parentNode.insertBefore(js, fjs);
        }(document, 'script', 'facebook-jssdk'));
+
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+
+      function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+          FB.api('/me?fields=name,email', function(response) {
+            document.getElementById('status').innerHTML = 'Hei, ' + response.name + '!';
+            document.getElementById('email').value = response.email;
+            document.getElementById('name').value = response.name;
+            document.getElementById('voteForm').style.display = 'block';
+          });
+        } else {
+          document.getElementById('status').innerHTML = 'Vennligst logg inn for å delta i avstemningen.';
+          document.getElementById('voteForm').style.display = 'none';
+        }
+      }
     </script>
 
     <!-- Facebook login button -->
-    <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>
+    <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkLoginState();"></div>
+
+    <div id="status"></div>
+
+    <!-- Avstemningsskjema -->
+    <h1>Avstemning for firmatur</h1>
+    <form id="voteForm" style="display:none;">
+        <input type="hidden" id="email" name="email">
+        <input type="hidden" id="name" name="name">
+        
+        <h2>Sverige</h2>
+        <label>
+            <input type="radio" name="destination" value="Volvo-museet i Göteborg"> Volvo-museet i Göteborg
+        </label>
+        <p>Museet viser historien til Volvo, inkludert personbiler, lastebiler, busser og anleggsmaskiner.</p>
+        <p><a href="https://www.volvomuseum.com/">Volvo-museet</a></p>
+        
+        <label>
+            <input type="radio" name="destination" value="Scania-museet i Södertälje"> Scania-museet i Södertälje
+        </label>
+        <p>Museet fokuserer på historien og utviklingen av Scania lastebiler og busser.</p>
+        <p><a href="https://www.scania.com/group/en/home/about-scania/contact-us/the-scania-museum-marcus-wallenberg-hall.html">Scania-museet</a></p>
+        
+        <h2>Norge</h2>
+        <label>
+            <input type="radio" name="destination" value="Norsk vegmuseum i Lillehammer"> Norsk vegmuseum i Lillehammer
+        </label>
+        <p>Vegmuseum som viser historien til vegtransport i Norge.</p>
+        <p><a href="https://vegmuseum.no/">Norsk vegmuseum</a></p>
+        
+        <label>
+            <input type="radio" name="destination" value="Telemark Teknologisk Innovasjonspark i Skien"> Telemark Teknologisk Innovasjonspark i Skien
+        </label>
+        <p>Innovasjonspark som samler bedrifter fra ulike sektorer, inkludert automotive, fokusert på utvikling av nye teknologier.</p>
+        <p><a href="https://www.visittelemark.no/ting-a-gjore/fabrikken-sentrum-p5298353">Telemark Teknologisk Innovasjonspark</a></p>
+        
+        <button type="button" onclick="submitVote()">Stem</button>
+    </form>
+
+    <div id="results">
+        <h2>Avstemningsresultater</h2>
+        <ul id="resultsList"></ul>
+    </div>
+
+    <script>
+        function submitVote() {
+            const form = document.getElementById('voteForm');
+            const data = new FormData(form);
+            const destination = data.get('destination');
+            const email = data.get('email');
+            const name = data.get('name');
+
+            if (destination) {
+                alert('Stemmen din er registrert for: ' + destination);
+                saveVote(destination, email, name);
+                displayResults();
+            } else {
+                alert('Vennligst velg et alternativ før du stemmer.');
+            }
+        }
+
+        function saveVote(destination, email, name) {
+            let votes = JSON.parse(localStorage.getItem('votes')) || [];
+            votes.push({ destination, email, name });
+            localStorage.setItem('votes', JSON.stringify(votes));
+        }
+
+        function displayResults() {
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = '';
+            const votes = JSON.parse(localStorage.getItem('votes')) || [];
+            votes.forEach(vote => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Navn: ${vote.name}, E-post: ${vote.email}, Stemte på: ${vote.destination}`;
+                resultsList.appendChild(listItem);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            displayResults();
+        });
+    </script>
 </body>
 </html>
