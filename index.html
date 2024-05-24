@@ -56,6 +56,10 @@
         #logoutButton:hover {
             background-color: #0056b3;
         }
+        #messengerWarning {
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -120,13 +124,17 @@
 
       document.addEventListener('DOMContentLoaded', function() {
         if (detectMessenger()) {
-          document.getElementById('status').innerHTML = 'Hvis du har problemer med å logge inn, <a href="https://harrywitosa.github.io/facebook-login-demo/" target="_blank">klikk her for å åpne siden i nettleseren din</a>.';
+          document.getElementById('messengerWarning').style.display = 'block';
           document.getElementById('fb-login-button').style.display = 'none';
         } else {
           document.getElementById('fb-login-button').style.display = 'block';
         }
       });
     </script>
+
+    <div id="messengerWarning">
+        Hvis du har problemer med å logge inn, <a href="https://harrywitosa.github.io/facebook-login-demo/" target="_blank">klikk her for å åpne siden i nettleseren din</a>.
+    </div>
 
     <!-- Facebook login button -->
     <div id="fb-login-button" class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkLoginState();"></div>
@@ -203,7 +211,7 @@
         }
 
         function saveVote(destination, email, name) {
-            const url = 'https://script.google.com/macros/s/AKfycbzNMsoU772MseNXc1tvVrmrI8DeaJ60H8ByY9ZGVjvez0RTDjjGQjAX0uajg5c8M9V2PQ/exec'; // Twój URL Google Apps Script
+            const url = 'https://script.google.com/macros/s/AKfycbwx9vQPEVBHMQ5iKSIIZ7PgLnlv-wYiuz8KenEtpItUq3riNom3j2NmsdGv8r9YF8Esmg/exec'; // Twój URL Google Apps Script
             const data = {
                 destination: destination,
                 email: email,
@@ -224,8 +232,6 @@
             .catch((error) => {
                 console.error('Error:', error);
             });
-
-            displayResults();
         }
 
         function displayResults() {
