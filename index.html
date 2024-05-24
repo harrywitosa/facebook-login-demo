@@ -65,7 +65,7 @@
     <script>
       window.fbAsyncInit = function() {
         FB.init({
-          appId      : '1139701013935835', // Bytt ut med din App ID
+          appId      : '1139701013935835', // Twój App ID
           cookie     : true,
           xfbml      : true,
           version    : 'v10.0'
@@ -107,7 +107,6 @@
 
       function logout() {
         FB.logout(function(response) {
-          // Person is now logged out
           document.getElementById('status').innerHTML = 'Du har logget ut.';
           document.getElementById('voteForm').style.display = 'none';
           document.getElementById('logoutButton').style.display = 'none';
@@ -130,6 +129,8 @@
     <button id="logoutButton" onclick="logout()">Logg ut</button>
 
     <div id="status"></div>
+
+    <p>Hvis du har problemer med å logge inn, <a href="https://harrywitos.github.io/facebook-login-demo" target="_blank">klikk her for å åpne siden i nettleseren din</a>.</p>
 
     <div class="content">
         <!-- Avstemningsskjema -->
@@ -199,7 +200,7 @@
         }
 
         function saveVote(destination, email, name) {
-            const url = 'https://script.google.com/macros/s/AKfycbzNMsoU772MseNXc1tvVrmrI8DeaJ60H8ByY9ZGVjvez0RTDjjGQjAX0uajg5c8M9V2PQ/exec'; // Zamień na URL Google Apps Script
+            const url = 'https://script.google.com/macros/s/AKfycbzNMsoU772MseNXc1tvVrmrI8DeaJ60H8ByY9ZGVjvez0RTDjjGQjAX0uajg5c8M9V2PQ/exec'; // Twój URL Google Apps Script
             const data = {
                 destination: destination,
                 email: email,
