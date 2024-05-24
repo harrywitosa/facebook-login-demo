@@ -43,6 +43,19 @@
         .link:hover {
             text-decoration: underline;
         }
+        #logoutButton {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logoutButton:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -83,11 +96,22 @@
             document.getElementById('email').value = response.email;
             document.getElementById('name').value = response.name;
             document.getElementById('voteForm').style.display = 'block';
+            document.getElementById('logoutButton').style.display = 'block';
           });
         } else {
           document.getElementById('status').innerHTML = 'Vennligst logg inn for å delta i avstemningen.';
           document.getElementById('voteForm').style.display = 'none';
+          document.getElementById('logoutButton').style.display = 'none';
         }
+      }
+
+      function logout() {
+        FB.logout(function(response) {
+          // Person is now logged out
+          document.getElementById('status').innerHTML = 'Du har logget ut.';
+          document.getElementById('voteForm').style.display = 'none';
+          document.getElementById('logoutButton').style.display = 'none';
+        });
       }
 
       function detectMessenger() {
@@ -99,9 +123,11 @@
         window.location.href = "https://harrywitos.github.io/facebook-login-demo";
       }
     </script>
-<p>Hvis du har problemer med å logge inn, <a href="https://harrywitos.github.io/facebook-login-demo" target="_blank">klikk her for å åpne siden i nettleseren din</a>.</p>
+
     <!-- Facebook login button -->
     <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkLoginState();"></div>
+
+    <button id="logoutButton" onclick="logout()">Logg ut</button>
 
     <div id="status"></div>
 
@@ -173,9 +199,29 @@
         }
 
         function saveVote(destination, email, name) {
-            let votes = JSON.parse(localStorage.getItem('votes')) || [];
-            votes.push({ destination, email, name });
-            localStorage.setItem('votes', JSON.stringify(votes));
+            const url = 'https://script.google.com/macros/s/AKfycbzNMsoU772MseNXc1tvVrmrI8DeaJ60H8ByY9ZGVjvez0RTDjjGQjAX0uajg5c8M9V2PQ/exec'; // Zamień na URL Google Apps Script
+            const data = {
+                destination: destination,
+                email: email,
+                name: name
+            };
+
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+            displayResults();
         }
 
         function displayResults() {
@@ -192,7 +238,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             displayResults();
         });
-    
-     </script>
+    </script>
 </body>
 </html>
