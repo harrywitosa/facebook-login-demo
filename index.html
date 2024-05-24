@@ -121,12 +121,15 @@
       document.addEventListener('DOMContentLoaded', function() {
         if (detectMessenger()) {
           document.getElementById('status').innerHTML = 'Hvis du har problemer med å logge inn, <a href="https://harrywitosa.github.io/facebook-login-demo/" target="_blank">klikk her for å åpne siden i nettleseren din</a>.';
+          document.getElementById('fb-login-button').style.display = 'none';
+        } else {
+          document.getElementById('fb-login-button').style.display = 'block';
         }
       });
     </script>
 
     <!-- Facebook login button -->
-    <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkLoginState();"></div>
+    <div id="fb-login-button" class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkLoginState();"></div>
 
     <button id="logoutButton" onclick="logout()">Logg ut</button>
 
