@@ -118,9 +118,11 @@
         return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
       }
 
-      if (detectMessenger()) {
-        window.location.href = "https://harrywitosa.github.io/facebook-login-demo/";
-      }
+      document.addEventListener('DOMContentLoaded', function() {
+        if (detectMessenger()) {
+          document.getElementById('status').innerHTML = 'Hvis du har problemer med å logge inn, <a href="https://harrywitosa.github.io/facebook-login-demo/" target="_blank">klikk her for å åpne siden i nettleseren din</a>.';
+        }
+      });
     </script>
 
     <!-- Facebook login button -->
@@ -129,8 +131,6 @@
     <button id="logoutButton" onclick="logout()">Logg ut</button>
 
     <div id="status"></div>
-
-    <p>Hvis du har problemer med å logge inn, <a href="https://harrywitosa.github.io/facebook-login-demo/" target="_blank">klikk her for å åpne siden i nettleseren din</a>.</p>
 
     <div class="content">
         <!-- Avstemningsskjema -->
@@ -242,3 +242,4 @@
     </script>
 </body>
 </html>
+
