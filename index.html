@@ -2,8 +2,51 @@
 <html>
 <head>
     <title>Firmaturstemning</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            font-size: 2em;
+            animation: fadeIn 2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .content {
+            margin: 20px;
+        }
+        .vote-section {
+            background-color: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .result-section {
+            background-color: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .link {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
+    <div class="header">WistLastOgBuss Volda</div>
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
     <script>
@@ -53,44 +96,54 @@
 
     <div id="status"></div>
 
-    <!-- Avstemningsskjema -->
-    <h1>Avstemning for firmatur</h1>
-    <form id="voteForm" style="display:none;">
-        <input type="hidden" id="email" name="email">
-        <input type="hidden" id="name" name="name">
-        
-        <h2>Sverige</h2>
-        <label>
-            <input type="radio" name="destination" value="Volvo-museet i Göteborg"> Volvo-museet i Göteborg
-        </label>
-        <p>Museet viser historien til Volvo, inkludert personbiler, lastebiler, busser og anleggsmaskiner.</p>
-        <p><a href="https://www.volvomuseum.com/">Volvo-museet</a></p>
-        
-        <label>
-            <input type="radio" name="destination" value="Scania-museet i Södertälje"> Scania-museet i Södertälje
-        </label>
-        <p>Museet fokuserer på historien og utviklingen av Scania lastebiler og busser.</p>
-        <p><a href="https://www.scania.com/group/en/home/about-scania/contact-us/the-scania-museum-marcus-wallenberg-hall.html">Scania-museet</a></p>
-        
-        <h2>Norge</h2>
-        <label>
-            <input type="radio" name="destination" value="Norsk vegmuseum i Lillehammer"> Norsk vegmuseum i Lillehammer
-        </label>
-        <p>Vegmuseum som viser historien til vegtransport i Norge.</p>
-        <p><a href="https://vegmuseum.no/">Norsk vegmuseum</a></p>
-        
-        <label>
-            <input type="radio" name="destination" value="Telemark Teknologisk Innovasjonspark i Skien"> Telemark Teknologisk Innovasjonspark i Skien
-        </label>
-        <p>Innovasjonspark som samler bedrifter fra ulike sektorer, inkludert automotive, fokusert på utvikling av nye teknologier.</p>
-        <p><a href="https://www.visittelemark.no/ting-a-gjore/fabrikken-sentrum-p5298353">Telemark Teknologisk Innovasjonspark</a></p>
-        
-        <button type="button" onclick="submitVote()">Stem</button>
-    </form>
+    <div class="content">
+        <!-- Avstemningsskjema -->
+        <h1>Avstemning for firmatur</h1>
+        <form id="voteForm" style="display:none;" class="vote-section">
+            <input type="hidden" id="email" name="email">
+            <input type="hidden" id="name" name="name">
+            
+            <h2>Sverige</h2>
+            <label>
+                <input type="radio" name="destination" value="Volvo-museet i Göteborg"> Volvo-museet i Göteborg
+            </label>
+            <p>Museet viser historien til Volvo, inkludert personbiler, lastebiler, busser og anleggsmaskiner.</p>
+            <p>Utdanningsaktiviteter: Omvisninger, tematiske verksteder.</p>
+            <p>Avslapning: Båttur i Göteborgs skjærgård, middag på en lokal restaurant.</p>
+            <p><a href="https://www.volvomuseum.com/" class="link">Volvo-museet</a></p>
+            
+            <label>
+                <input type="radio" name="destination" value="Scania-museet i Södertälje"> Scania-museet i Södertälje
+            </label>
+            <p>Museet fokuserer på historien og utviklingen av Scania lastebiler og busser.</p>
+            <p>Utdanningsaktiviteter: Teknologipresentasjoner, verksteder om moderne løsninger i lastebiler.</p>
+            <p>Avslapning: Utforskning av Södertälje, avslapning ved Mälaren.</p>
+            <p><a href="https://www.scania.com/group/en/home/about-scania/contact-us/the-scania-museum-marcus-wallenberg-hall.html" class="link">Scania-museet</a></p>
+            
+            <h2>Norge</h2>
+            <label>
+                <input type="radio" name="destination" value="Norsk vegmuseum i Lillehammer"> Norsk vegmuseum i Lillehammer
+            </label>
+            <p>Vegmuseum som viser historien til vegtransport i Norge.</p>
+            <p>Utdanningsaktiviteter: Interaktive utstillinger, presentasjoner om historien og teknologien til lastebiler.</p>
+            <p>Avslapning: Utforskning av Lillehammer, besøk i OL-parken.</p>
+            <p><a href="https://vegmuseum.no/" class="link">Norsk vegmuseum</a></p>
+            
+            <label>
+                <input type="radio" name="destination" value="Telemark Teknologisk Innovasjonspark i Skien"> Telemark Teknologisk Innovasjonspark i Skien
+            </label>
+            <p>Innovasjonspark som samler bedrifter fra ulike sektorer, inkludert automotive, fokusert på utvikling av nye teknologier.</p>
+            <p>Utdanningsaktiviteter: Presentasjoner om fremtidens motorteknologi, inspirerende workshops.</p>
+            <p>Avslapning: Utforskning av Telemark-regionen, båttur på Telemarkskanalen.</p>
+            <p><a href="https://www.visittelemark.no/ting-a-gjore/fabrikken-sentrum-p5298353" class="link">Telemark Teknologisk Innovasjonspark</a></p>
+            
+            <button type="button" onclick="submitVote()">Stem</button>
+        </form>
 
-    <div id="results">
-        <h2>Avstemningsresultater</h2>
-        <ul id="resultsList"></ul>
+        <div class="result-section" id="results">
+            <h2>Avstemningsresultater</h2>
+            <ul id="resultsList"></ul>
+        </div>
     </div>
 
     <script>
