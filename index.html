@@ -72,7 +72,7 @@
                 <p>Vegmuseum som viser historien til vegtransport i Norge.</p>
                 <p>Utdanningsaktiviteter: Interaktive utstillinger, presentasjoner om historien og teknologien til lastebiler.</p>
                 <p>Avslapning: Utforskning av Lillehammer, besøk i OL-parken.</p>
-                <p><a href="https://vegmuseum.no/" class="link">Norsk egmuseum</a></p>
+                <p><a href="https://vegmuseum.no/" class="link">Norsk vegmuseum</a></p>
                 
                 <label>
                     <input type="radio" name="Destinasjon" value="Telemark Teknologisk Innovasjonspark i Skien" required> Telemark Teknologisk Innovasjonspark i Skien
@@ -118,16 +118,16 @@
                         document.getElementById('voteForm').style.display = 'none';
                         document.getElementById('thankYouMessage').style.display = 'block';
                     } else {
-                        alert('Error: ' + result.message);
+                        alert('Wystąpił błąd: ' + result.message);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    alert('Wystąpił błąd: ' + error.message);
                 });
-            } else {
-                alert('Vennligst fyll ut alle felt før du stemmer.');
             }
         }
     </script>
 </body>
 </html>
+
