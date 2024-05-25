@@ -1,151 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-    <title>Firmaturstemning</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            text-align: center;
-        }
-        .header {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            font-size: 2em;
-            animation: fadeIn 2s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .content {
-            margin: 20px;
-        }
-        .vote-section {
-            background-color: white;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .link {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        .link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">WistLastOgBuss Volda</div>
-    <div class="content">
-        <div id="voteForm" class="vote-section">
-            <h1>Avstemning for firmatur</h1>
-            <form id="vote">
-                <label for="name">Navn:</label>
-                <input type="text" id="name" name="Navn" required><br><br>
-                
-                <h2>Sverige</h2>
-                <label>
-                    <input type="radio" name="Destinasjon" value="Volvo-museet i Göteborg" required> Volvo-museet i Göteborg
-                </label>
-                <p>Museet viser historien til Volvo, inkludert personbiler, lastebiler, busser og anleggsmaskiner.</p>
-                <p>Utdanningsaktiviteter: Omvisninger, tematiske verksteder.</p>
-                <p>Avslapning: Båttur i Göteborgs skjærgård, middag på en lokal restaurant.</p>
-                <p><a href="https://www.volvomuseum.com/" class="link">Volvo-museet</a></p>
-                
-                <label>
-                    <input type="radio" name="Destinasjon" value="Scania-museet i Södertälje" required> Scania-museet i Södertälje
-                </label>
-                <p>Museet fokuserer på historien og utviklingen av Scania lastebiler og busser.</p>
-                <p>Utdanningsaktiviteter: Teknologipresentasjoner, verksteder om moderne løsninger i lastebiler.</p>
-                <p>Avslapning: Utforskning av Södertälje, avslapning ved Mälaren.</p>
-                <p><a href="https://www.scania.com/group/en/home/about-scania/contact-us/the-scania-museum-marcus-wallenberg-hall.html" class="link">Scania-museet</a></p>
-                
-                <h2>Norge</h2>
-                <label>
-                    <input type="radio" name="Destinasjon" value="Norsk vegmuseum i Lillehammer" required> Norsk vegmuseum i Lillehammer
-                </label>
-                <p>Vegmuseum som viser historien til vegtransport i Norge.</p>
-                <p>Utdanningsaktiviteter: Interaktive utstillinger, presentasjoner om historien og teknologien til lastebiler.</p>
-                <p>Avslapning: Utforskning av Lillehammer, besøk i OL-parken.</p>
-                <p><a href="https://vegmuseum.no/" class="link">Norsk vegmuseum</a></p>
-                
-                <label>
-                    <input type="radio" name="Destinasjon" value="Telemark Teknologisk Innovasjonspark i Skien" required> Telemark Teknologisk Innovasjonspark i Skien
-                </label>
-                <p>Innovasjonspark som samler bedrifter fra ulike sektorer, inkludert automotive, fokusert på utvikling av nye teknologier.</p>
-                <p>Utdanningsaktiviteter: Presentasjoner om fremtidens motorteknologi, inspirerende workshops.</p>
-                <p>Avslapning: Utforskning av Telemark-regionen, båttur på Telemarkskanalen.</p>
-                <p><a href="https://www.visittelemark.no/ting-a-gjore/fabrikken-sentrum-p5298353" class="link">Telemark Teknologisk Innovasjonspark</a></p>
-                
-                <button type="button" onclick="submitVote()">Stem</button>
-            </form>
-        </div>
-        <div id="thankYouMessage" style="display:none;">
-            <h1>Takk for stemmen din!</h1>
-        </div>
-    </div>
+    <title>Vote</title>
     <script>
-        function submitVote() {
-            const form = document.getElementById('vote');
-            const data = new FormData(form);
-            const name = data.get('Navn');
-            const destination = data.get('Destinasjon');
+        async function submitVote() {
+            const name = document.getElementById('name').value;
+            const destination = document.getElementById('destination').value;
 
-            if (name && destination) {
-                fetch('http://localhost:3000/proxy', {
+            try {
+                const response = await fetch('http://localhost:3000/proxy', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        Navn: name,
-                        Destinasjon: destination
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.result === 'success') {
-                        document.getElementById('voteForm').style.display = 'none';
-                        document.getElementById('thankYouMessage').style.display = 'block';
-                    } else {
-                        alert('Błąd podczas głosowania: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Błąd:', error);
-                    alert('Błąd podczas głosowania. Spróbuj ponownie później.');
+                    body: JSON.stringify({ name, destination })
                 });
-            } else {
-                alert('Wypełnij wszystkie pola!');
+
+                if (response.ok) {
+                    document.getElementById('voteForm').style.display = 'none';
+                    document.getElementById('thankYouMessage').style.display = 'block';
+                } else {
+                    alert('Det oppsto en feil. Vennligst prøv igjen.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Det oppsto en feil. Vennligst prøv igjen.');
             }
         }
     </script>
-<script>
-    async function submitVote() {
-        const name = document.getElementById('name').value;
-        const destination = document.getElementById('destination').value;
-        const response = await fetch('http://localhost:3000/proxy', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, destination })
-        });
-
-        if (response.ok) {
-            document.getElementById('voteForm').style.display = 'none';
-            document.getElementById('thankYouMessage').style.display = 'block';
-        } else {
-            alert('Det oppsto en feil. Vennligst prøv igjen.');
-        }
-    }
-</script>
-
-
+</head>
+<body>
+    <div id="voteForm">
+        <input type="text" id="name" placeholder="Navn">
+        <select id="destination">
+            <option value="Volvo-museet i Göteborg">Volvo-museet i Göteborg</option>
+            <option value="Scania-museet i Södertälje">Scania-museet i Södertälje</option>
+            <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer</option>
+            <option value="Telemark Teknologisk Innovasjonspark i Skien">Telemark Teknologisk Innovasjonspark i Skien</option>
+        </select>
+        <button onclick="submitVote()">Stem</button>
+    </div>
+    <div id="thankYouMessage" style="display:none;">
+        Takk for stemmen din!
+    </div>
 </body>
 </html>
