@@ -97,8 +97,8 @@
         if (response.status === 'connected') {
           FB.api('/me?fields=name,email', function(response) {
             document.getElementById('status').innerHTML = 'Hei, ' + response.name + '!';
-            document.getElementById('email').value = response.email;
-            document.getElementById('name').value = response.name;
+            document.getElementById('E-post').value = response.email;
+            document.getElementById('Navn').value = response.name;
             document.getElementById('voteForm').style.display = 'block';
             document.getElementById('logoutButton').style.display = 'block';
           });
@@ -147,12 +147,12 @@
         <!-- Avstemningsskjema -->
         <h1>Avstemning for firmatur</h1>
         <form id="voteForm" style="display:none;" class="vote-section">
-            <input type="hidden" id="email" name="email">
-            <input type="hidden" id="name" name="name">
+            <input type="hidden" id="E-post" name="E-post">
+            <input type="hidden" id="Navn" name="Navn">
             
             <h2>Sverige</h2>
             <label>
-                <input type="radio" name="destination" value="Volvo-museet i Göteborg"> Volvo-museet i Göteborg
+                <input type="radio" name="Destinasjon" value="Volvo-museet i Göteborg"> Volvo-museet i Göteborg
             </label>
             <p>Museet viser historien til Volvo, inkludert personbiler, lastebiler, busser og anleggsmaskiner.</p>
             <p>Utdanningsaktiviteter: Omvisninger, tematiske verksteder.</p>
@@ -160,7 +160,7 @@
             <p><a href="https://www.volvomuseum.com/" class="link">Volvo-museet</a></p>
             
             <label>
-                <input type="radio" name="destination" value="Scania-museet i Södertälje"> Scania-museet i Södertälje
+                <input type="radio" name="Destinasjon" value="Scania-museet i Södertälje"> Scania-museet i Södertälje
             </label>
             <p>Museet fokuserer på historien og utviklingen av Scania lastebiler og busser.</p>
             <p>Utdanningsaktiviteter: Teknologipresentasjoner, verksteder om moderne løsninger i lastebiler.</p>
@@ -169,7 +169,7 @@
             
             <h2>Norge</h2>
             <label>
-                <input type="radio" name="destination" value="Norsk vegmuseum i Lillehammer"> Norsk vegmuseum i Lillehammer
+                <input type="radio" name="Destinasjon" value="Norsk vegmuseum i Lillehammer"> Norsk vegmuseum i Lillehammer
             </label>
             <p>Vegmuseum som viser historien til vegtransport i Norge.</p>
             <p>Utdanningsaktiviteter: Interaktive utstillinger, presentasjoner om historien og teknologien til lastebiler.</p>
@@ -177,7 +177,7 @@
             <p><a href="https://vegmuseum.no/" class="link">Norsk vegmuseum</a></p>
             
             <label>
-                <input type="radio" name="destination" value="Telemark Teknologisk Innovasjonspark i Skien"> Telemark Teknologisk Innovasjonspark i Skien
+                <input type="radio" name="Destinasjon" value="Telemark Teknologisk Innovasjonspark i Skien"> Telemark Teknologisk Innovasjonspark i Skien
             </label>
             <p>Innovasjonspark som samler bedrifter fra ulike sektorer, inkludert automotive, fokusert på utvikling av nye teknologier.</p>
             <p>Utdanningsaktiviteter: Presentasjoner om fremtidens motorteknologi, inspirerende workshops.</p>
@@ -197,9 +197,9 @@
         function submitVote() {
             const form = document.getElementById('voteForm');
             const data = new FormData(form);
-            const destination = data.get('destination');
-            const email = data.get('email');
-            const name = data.get('name');
+            const destination = data.get('Destinasjon');
+            const email = data.get('E-post');
+            const name = data.get('Navn');
 
             if (destination) {
                 alert('Stemmen din er registrert for: ' + destination);
@@ -213,9 +213,9 @@
         function saveVote(destination, email, name) {
             const url = 'https://script.google.com/macros/s/AKfycbxHcbc5160qjsb3qqShE044GSW6zxTEr1Vo4JNlskg5OmU32Kql6rlr4wLxfEvUx_yf/exec'; // Twój URL Google Apps Script
             const data = {
-                destination: destination,
-                email: email,
-                name: name
+                Destinasjon: destination,
+                'E-post': email,
+                Navn: name
             };
 
             fetch(url, {
@@ -240,7 +240,7 @@
             const votes = JSON.parse(localStorage.getItem('votes')) || [];
             votes.forEach(vote => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `Navn: ${vote.name}, E-post: ${vote.email}, Stemte på: ${vote.destination}`;
+                listItem.textContent = `Navn: ${vote.Navn}, E-post: ${vote['E-post']}, Stemte på: ${vote.Destinasjon}`;
                 resultsList.appendChild(listItem);
             });
         }
