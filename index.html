@@ -61,94 +61,35 @@
             color: red;
             display: none;
         }
-        .fb-login-button {
+        .login-button {
             margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4267B2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login-button:hover {
+            background-color: #365899;
         }
     </style>
 </head>
 <body>
     <div class="header">WistLastOgBuss Volda</div>
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-    <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId      : '1139701013935835', // Twój App ID
-                cookie     : true,
-                xfbml      : true,
-                version    : 'v10.0'
-            });
-
-            FB.AppEvents.logPageView();   
-            checkLoginState();
-        };
-
-        function checkLoginState() {
-            FB.getLoginStatus(function(response) {
-                statusChangeCallback(response);
-            });
-        }
-
-        function statusChangeCallback(response) {
-            console.log('FB statusChangeCallback', response);
-            if (response.status === 'connected') {
-                FB.api('/me?fields=name,email', function(response) {
-                    console.log('Successful login for: ', response);
-                    document.getElementById('status').innerHTML = 'Hei, ' + response.name + '!';
-                    document.getElementById('E-post').value = response.email;
-                    document.getElementById('Navn').value = response.name;
-                    document.getElementById('voteForm').style.display = 'block';
-                    document.getElementById('logoutButton').style.display = 'block';
-                    document.getElementById('fb-login-button').style.display = 'none';
-                });
-            } else {
-                console.log('Not logged in');
-                document.getElementById('status').innerHTML = 'Vennligst logg inn for å delta i avstemningen.';
-                document.getElementById('voteForm').style.display = 'none';
-                document.getElementById('logoutButton').style.display = 'none';
-                document.getElementById('fb-login-button').style.display = 'block';
-            }
-        }
-
-        function logout() {
-            FB.logout(function(response) {
-                document.getElementById('status').innerHTML = 'Du har logget ut.';
-                document.getElementById('voteForm').style.display = 'none';
-                document.getElementById('logoutButton').style.display = 'none';
-                document.getElementById('fb-login-button').style.display = 'block';
-            });
-        }
-
-        function detectMessenger() {
-            var ua = navigator.userAgent || navigator.vendor || window.opera;
-            return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            if (detectMessenger()) {
-                document.getElementById('messengerWarning').style.display = 'block';
-                document.getElementById('fb-login-button').style.display = 'none';
-            } else {
-                document.getElementById('fb-login-button').style.display = 'block';
-            }
-        });
-    </script>
-
-    <div id="messengerWarning">
-        Hvis du har problemer med å logge inn, <a href="https://harrywitosa.github.io/facebook-login-demo/" target="_blank">klikk her for å åpne siden i nettleseren din</a>.
-    </div>
-
-    <!-- Facebook login button -->
-    <div id="fb-login-button" class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkLoginState();"></div>
-
-    <button id="logoutButton" onclick="logout()">Logg ut</button>
 
     <div id="status"></div>
 
     <div class="content">
-        <!-- Avstemningsskjema -->
-        <h1>Avstemning for firmatur</h1>
-        <form id="voteForm" style="display:none;" class="vote-section">
+        <button id="loginButton" class="login-button" onclick="loginWithFacebook()">Logg inn med Facebook</button>
+        <button id="logoutButton" onclick="logout()" style="display:none;">Logg ut</button>
+
+        <div id="messengerWarning" style="color: red; display: none;">
+            Hvis du har problemer med å logge inn, <a href="https://harrywitosa.github.io/facebook-login-demo/" target="_blank">klikk her for å åpne siden i nettleseren din</a>.
+        </div>
+
+        <div id="voteForm" style="display:none;" class="vote-section">
+            <h1>Avstemning for firmatur</h1>
             <input type="hidden" id="E-post" name="E-post">
             <input type="hidden" id="Navn" name="Navn">
             
@@ -187,7 +128,7 @@
             <p><a href="https://www.visittelemark.no/ting-a-gjore/fabrikken-sentrum-p5298353" class="link">Telemark Teknologisk Innovasjonspark</a></p>
             
             <button type="button" onclick="submitVote()">Stem</button>
-        </form>
+        </div>
 
         <div class="result-section" id="results">
             <h2>Avstemningsresultater</h2>
@@ -196,6 +137,55 @@
     </div>
 
     <script>
+        function loginWithFacebook() {
+            const appId = '1139701013935835'; // Twój App ID
+            const redirectUri = 'https://harrywitosa.github.io/facebook-login-demo/';
+            const state = 'randomState'; // Możesz użyć czegoś bardziej unikalnego
+            const scope = 'email';
+
+            const authUrl = `https://www.facebook.com/v10.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`;
+            window.location.href = authUrl;
+        }
+
+        function getQueryStringParams(query) {
+            return query.split("&").reduce(function(result, value) {
+                const parts = value.split("=");
+                result[parts[0]] = parts[1];
+                return result;
+            }, {});
+        }
+
+        function checkLoginState() {
+            const params = getQueryStringParams(window.location.search.substring(1));
+            if (params.access_token) {
+                fetch(`https://graph.facebook.com/me?access_token=${params.access_token}&fields=id,name,email`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('status').innerHTML = 'Hei, ' + data.name + '!';
+                        document.getElementById('E-post').value = data.email;
+                        document.getElementById('Navn').value = data.name;
+                        document.getElementById('voteForm').style.display = 'block';
+                        document.getElementById('logoutButton').style.display = 'block';
+                        document.getElementById('loginButton').style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                document.getElementById('status').innerHTML = 'Vennligst logg inn for å delta i avstemningen.';
+                document.getElementById('voteForm').style.display = 'none';
+                document.getElementById('logoutButton').style.display = 'none';
+                document.getElementById('loginButton').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            document.getElementById('status').innerHTML = 'Du har logget ut.';
+            document.getElementById('voteForm').style.display = 'none';
+            document.getElementById('logoutButton').style.display = 'none';
+            document.getElementById('loginButton').style.display = 'block';
+        }
+
         function submitVote() {
             const form = document.getElementById('voteForm');
             const data = new FormData(form);
@@ -248,6 +238,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            checkLoginState();
             displayResults();
         });
     </script>
