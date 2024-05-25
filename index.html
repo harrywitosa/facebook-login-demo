@@ -1,85 +1,56 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WistLastOgBuss Volda</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            background-color: #f7f7f7;
+            text-align: center;
             margin: 0;
+            padding: 0;
         }
         .container {
-            text-align: center;
+            margin-top: 50px;
         }
         .title {
-            background-color: #1a73e8;
+            background-color: #0044cc;
             color: white;
             padding: 20px;
-            width: 100%;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
         }
-        .form-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        .thank-you {
+            display: none;
+            font-size: 18px;
+            color: green;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="title">
-            <h1>WistLastOgBuss Volda</h1>
-        </div>
-        <div class="form-container">
-            <p>Vennligst logg inn for å delta i avstemningen.</p>
-            <form id="voteForm">
-                <label for="name">Navn:</label><br>
-                <input type="text" id="name" name="name" required><br>
-                <label for="destination">Destinasjon:</label><br>
-                <select id="destination" name="destination" required>
-                    <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer</option>
-                    <option value="Andre destinasjoner">Andre destinasjoner</option>
-                </select><br><br>
-                <button type="button" onclick="submitVote()">Stem</button>
-            </form>
-            <p id="responseMessage"></p>
-        </div>
+        <div class="title">WistLastOgBuss Volda</div>
+        <p>Velg ditt reisemål</p>
+        <select id="destination">
+            <option value="Norsk vegmuseum i Lillehammer - Vegmuseum som viser historien til vegtransport i Norge.">Norsk vegmuseum i Lillehammer - Vegmuseum som viser historien til vegtransport i Norge.</option>
+            <option value="Kon-Tiki Museet i Oslo - Museet er dedikert til Thor Heyerdahls oppdagelser og ekspedisjoner.">Kon-Tiki Museet i Oslo - Museet er dedikert til Thor Heyerdahls oppdagelser og ekspedisjoner.</option>
+            <option value="Fløyen i Bergen - Fløyen er en av de mest kjente fjellene i Bergen, kjent for sine vakre utsikter.">Fløyen i Bergen - Fløyen er en av de mest kjente fjellene i Bergen, kjent for sine vakre utsikter.</option>
+        </select>
+        <br><br>
+        <button onclick="submitVote()">Stem</button>
+        <p class="error" id="error"></p>
+        <div class="thank-you" id="thank-you">Takk for stemmen din!</div>
     </div>
-
     <script>
         function submitVote() {
-            const name = document.getElementById('name').value;
             const destination = document.getElementById('destination').value;
-            const data = {
-                name: name,
-                destination: destination
-            };
-
             fetch('http://localhost:3000/proxy', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('responseMessage').textContent = data.result;
-                if (data.result === 'success') {
-                    window.location.href = 'https://harrywitosa.github.io/facebook-login-demo/takk.html';
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                document.getElementById('responseMessage').textContent = 'Det oppsto en feil. Vennligst prøv igjen.';
-            });
-        }
-    </script>
-</body>
-</html>
+                headers
