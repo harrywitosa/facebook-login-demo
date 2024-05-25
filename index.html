@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Firmaturstemning</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,12 +61,15 @@
             color: red;
             display: none;
         }
+        .fb-login-button {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="header">WistLastOgBuss Volda</div>
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
     <script>
       window.fbAsyncInit = function() {
         FB.init({
@@ -78,14 +82,6 @@
         FB.AppEvents.logPageView();   
         checkLoginState();
       };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "https://connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
 
       function checkLoginState() {
         FB.getLoginStatus(function(response) {
@@ -101,11 +97,13 @@
             document.getElementById('Navn').value = response.name;
             document.getElementById('voteForm').style.display = 'block';
             document.getElementById('logoutButton').style.display = 'block';
+            document.getElementById('fb-login-button').style.display = 'none';
           });
         } else {
           document.getElementById('status').innerHTML = 'Vennligst logg inn for å delta i avstemningen.';
           document.getElementById('voteForm').style.display = 'none';
           document.getElementById('logoutButton').style.display = 'none';
+          document.getElementById('fb-login-button').style.display = 'block';
         }
       }
 
@@ -114,6 +112,7 @@
           document.getElementById('status').innerHTML = 'Du har logget ut.';
           document.getElementById('voteForm').style.display = 'none';
           document.getElementById('logoutButton').style.display = 'none';
+          document.getElementById('fb-login-button').style.display = 'block';
         });
       }
 
