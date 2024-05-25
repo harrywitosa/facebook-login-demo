@@ -125,5 +125,27 @@
             }
         }
     </script>
+<script>
+    async function submitVote() {
+        const name = document.getElementById('name').value;
+        const destination = document.getElementById('destination').value;
+        const response = await fetch('http://localhost:3000/proxy', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, destination })
+        });
+
+        if (response.ok) {
+            document.getElementById('voteForm').style.display = 'none';
+            document.getElementById('thankYouMessage').style.display = 'block';
+        } else {
+            alert('Det oppsto en feil. Vennligst prøv igjen.');
+        }
+    }
+</script>
+
+
 </body>
 </html>
