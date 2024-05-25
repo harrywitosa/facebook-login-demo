@@ -114,8 +114,7 @@
                 .then(response => response.text())
                 .then(result => {
                     console.log('Success:', result);
-                    document.getElementById('voteForm').style.display = 'none';
-                    document.getElementById('thankYouMessage').style.display = 'block';
+                    window.location.href = 'takk.html'; // Przekierowanie na stronę podziękowania
                 })
                 .catch(error => {
                     console.error('Error:', error);
