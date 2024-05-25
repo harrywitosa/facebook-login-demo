@@ -30,13 +30,6 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        .result-section {
-            background-color: white;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
         .link {
             color: #007BFF;
             text-decoration: none;
@@ -44,203 +37,93 @@
         .link:hover {
             text-decoration: underline;
         }
-        #logoutButton {
-            display: none;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #logoutButton:hover {
-            background-color: #0056b3;
-        }
-        #messengerWarning {
-            color: red;
-            display: none;
-        }
-        .login-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4267B2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .login-button:hover {
-            background-color: #365899;
-        }
     </style>
 </head>
 <body>
     <div class="header">WistLastOgBuss Volda</div>
-
-    <div id="status"></div>
-
     <div class="content">
-        <button id="loginButton" class="login-button" onclick="loginWithFacebook()">Logg inn med Facebook</button>
-        <button id="logoutButton" onclick="logout()" style="display:none;">Logg ut</button>
-
-        <div id="messengerWarning" style="color: red; display: none;">
-            Hvis du har problemer med å logge inn, <a href="https://harrywitosa.github.io/facebook-login-demo/" target="_blank">klikk her for å åpne siden i nettleseren din</a>.
-        </div>
-
-        <div id="voteForm" style="display:none;" class="vote-section">
+        <div id="voteForm" class="vote-section">
             <h1>Avstemning for firmatur</h1>
-            <input type="hidden" id="E-post" name="E-post">
-            <input type="hidden" id="Navn" name="Navn">
-            
-            <h2>Sverige</h2>
-            <label>
-                <input type="radio" name="Destinasjon" value="Volvo-museet i Göteborg"> Volvo-museet i Göteborg
-            </label>
-            <p>Museet viser historien til Volvo, inkludert personbiler, lastebiler, busser og anleggsmaskiner.</p>
-            <p>Utdanningsaktiviteter: Omvisninger, tematiske verksteder.</p>
-            <p>Avslapning: Båttur i Göteborgs skjærgård, middag på en lokal restaurant.</p>
-            <p><a href="https://www.volvomuseum.com/" class="link">Volvo-museet</a></p>
-            
-            <label>
-                <input type="radio" name="Destinasjon" value="Scania-museet i Södertälje"> Scania-museet i Södertälje
-            </label>
-            <p>Museet fokuserer på historien og utviklingen av Scania lastebiler og busser.</p>
-            <p>Utdanningsaktiviteter: Teknologipresentasjoner, verksteder om moderne løsninger i lastebiler.</p>
-            <p>Avslapning: Utforskning av Södertälje, avslapning ved Mälaren.</p>
-            <p><a href="https://www.scania.com/group/en/home/about-scania/contact-us/the-scania-museum-marcus-wallenberg-hall.html" class="link">Scania-museet</a></p>
-            
-            <h2>Norge</h2>
-            <label>
-                <input type="radio" name="Destinasjon" value="Norsk vegmuseum i Lillehammer"> Norsk vegmuseum i Lillehammer
-            </label>
-            <p>Vegmuseum som viser historien til vegtransport i Norge.</p>
-            <p>Utdanningsaktiviteter: Interaktive utstillinger, presentasjoner om historien og teknologien til lastebiler.</p>
-            <p>Avslapning: Utforskning av Lillehammer, besøk i OL-parken.</p>
-            <p><a href="https://vegmuseum.no/" class="link">Norsk vegmuseum</a></p>
-            
-            <label>
-                <input type="radio" name="Destinasjon" value="Telemark Teknologisk Innovasjonspark i Skien"> Telemark Teknologisk Innovasjonspark i Skien
-            </label>
-            <p>Innovasjonspark som samler bedrifter fra ulike sektorer, inkludert automotive, fokusert på utvikling av nye teknologier.</p>
-            <p>Utdanningsaktiviteter: Presentasjoner om fremtidens motorteknologi, inspirerende workshops.</p>
-            <p>Avslapning: Utforskning av Telemark-regionen, båttur på Telemarkskanalen.</p>
-            <p><a href="https://www.visittelemark.no/ting-a-gjore/fabrikken-sentrum-p5298353" class="link">Telemark Teknologisk Innovasjonspark</a></p>
-            
-            <button type="button" onclick="submitVote()">Stem</button>
+            <form id="vote">
+                <label for="name">Navn:</label>
+                <input type="text" id="name" name="Navn" required><br><br>
+                
+                <h2>Sverige</h2>
+                <label>
+                    <input type="radio" name="Destinasjon" value="Volvo-museet i Göteborg" required> Volvo-museet i Göteborg
+                </label>
+                <p>Museet viser historien til Volvo, inkludert personbiler, lastebiler, busser og anleggsmaskiner.</p>
+                <p>Utdanningsaktiviteter: Omvisninger, tematiske verksteder.</p>
+                <p>Avslapning: Båttur i Göteborgs skjærgård, middag på en lokal restaurant.</p>
+                <p><a href="https://www.volvomuseum.com/" class="link">Volvo-museet</a></p>
+                
+                <label>
+                    <input type="radio" name="Destinasjon" value="Scania-museet i Södertälje" required> Scania-museet i Södertälje
+                </label>
+                <p>Museet fokuserer på historien og utviklingen av Scania lastebiler og busser.</p>
+                <p>Utdanningsaktiviteter: Teknologipresentasjoner, verksteder om moderne løsninger i lastebiler.</p>
+                <p>Avslapning: Utforskning av Södertälje, avslapning ved Mälaren.</p>
+                <p><a href="https://www.scania.com/group/en/home/about-scania/contact-us/the-scania-museum-marcus-wallenberg-hall.html" class="link">Scania-museet</a></p>
+                
+                <h2>Norge</h2>
+                <label>
+                    <input type="radio" name="Destinasjon" value="Norsk vegmuseum i Lillehammer" required> Norsk vegmuseum i Lillehammer
+                </label>
+                <p>Vegmuseum som viser historien til vegtransport i Norge.</p>
+                <p>Utdanningsaktiviteter: Interaktive utstillinger, presentasjoner om historien og teknologien til lastebiler.</p>
+                <p>Avslapning: Utforskning av Lillehammer, besøk i OL-parken.</p>
+                <p><a href="https://vegmuseum.no/" class="link">Norsk vegmuseum</a></p>
+                
+                <label>
+                    <input type="radio" name="Destinasjon" value="Telemark Teknologisk Innovasjonspark i Skien" required> Telemark Teknologisk Innovasjonspark i Skien
+                </label>
+                <p>Innovasjonspark som samler bedrifter fra ulike sektorer, inkludert automotive, fokusert på utvikling av nye teknologier.</p>
+                <p>Utdanningsaktiviteter: Presentasjoner om fremtidens motorteknologi, inspirerende workshops.</p>
+                <p>Avslapning: Utforskning av Telemark-regionen, båttur på Telemarkskanalen.</p>
+                <p><a href="https://www.visittelemark.no/ting-a-gjore/fabrikken-sentrum-p5298353" class="link">Telemark Teknologisk Innovasjonspark</a></p>
+                
+                <button type="button" onclick="submitVote()">Stem</button>
+            </form>
         </div>
-
-        <div class="result-section" id="results">
-            <h2>Avstemningsresultater</h2>
-            <ul id="resultsList"></ul>
+        <div id="thankYouMessage" style="display:none;">
+            <h1>Takk for stemmen din!</h1>
         </div>
     </div>
-
     <script>
-        function loginWithFacebook() {
-            const appId = '1139701013935835'; // Twój App ID
-            const redirectUri = 'https://harrywitosa.github.io/facebook-login-demo/';
-            const state = 'randomState'; // Możesz użyć czegoś bardziej unikalnego
-            const scope = 'public_profile,email';
-
-            const authUrl = `https://www.facebook.com/v10.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`;
-            window.location.href = authUrl;
-        }
-
-        function getQueryStringParams(query) {
-            return query.split("&").reduce(function(result, value) {
-                const parts = value.split("=");
-                result[parts[0]] = parts[1];
-                return result;
-            }, {});
-        }
-
-        function checkLoginState() {
-            const params = getQueryStringParams(window.location.search.substring(1));
-            if (params.access_token) {
-                fetch(`https://graph.facebook.com/me?access_token=${params.access_token}&fields=id,name,email`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('status').innerHTML = 'Hei, ' + data.name + '!';
-                        document.getElementById('E-post').value = data.email;
-                        document.getElementById('Navn').value = data.name;
-                        document.getElementById('voteForm').style.display = 'block';
-                        document.getElementById('logoutButton').style.display = 'block';
-                        document.getElementById('loginButton').style.display = 'none';
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            } else {
-                document.getElementById('status').innerHTML = 'Vennligst logg inn for å delta i avstemningen.';
-                document.getElementById('voteForm').style.display = 'none';
-                document.getElementById('logoutButton').style.display = 'none';
-                document.getElementById('loginButton').style.display = 'block';
-            }
-        }
-
-        function logout() {
-            document.getElementById('status').innerHTML = 'Du har logget ut.';
-            document.getElementById('voteForm').style.display = 'none';
-            document.getElementById('logoutButton').style.display = 'none';
-            document.getElementById('loginButton').style.display = 'block';
-        }
-
         function submitVote() {
-            const form = document.getElementById('voteForm');
+            const form = document.getElementById('vote');
             const data = new FormData(form);
-            const destination = data.get('Destinasjon');
-            const email = data.get('E-post');
             const name = data.get('Navn');
+            const destination = data.get('Destinasjon');
 
-            if (destination) {
+            if (name && destination) {
                 alert('Stemmen din er registrert for: ' + destination);
-                saveVote(destination, email, name);
-                displayResults();
+
+                // Send the vote data to Google Sheets
+                const url = 'https://script.google.com/macros/s/AKfycbwx9vQPEVBHMQ5iKSIIZ7PgLnlv-wYiuz8KenEtpItUq3riNom3j2NmsdGv8r9YF8Esmg/exec';
+                fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        Navn: name,
+                        Destinasjon: destination
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.text())
+                .then(result => {
+                    console.log('Success:', result);
+                    document.getElementById('voteForm').style.display = 'none';
+                    document.getElementById('thankYouMessage').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             } else {
-                alert('Vennligst velg et alternativ før du stemmer.');
+                alert('Vennligst fyll ut alle felt før du stemmer.');
             }
         }
-
-        function saveVote(destination, email, name) {
-            const url = 'https://script.google.com/macros/s/AKfycbwx9vQPEVBHMQ5iKSIIZ7PgLnlv-wYiuz8KenEtpItUq3riNom3j2NmsdGv8r9YF8Esmg/exec'; // Twój URL Google Apps Script
-            const data = {
-                Destinasjon: destination,
-                'E-post': email,
-                Navn: name
-            };
-
-            fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-
-        function displayResults() {
-            const resultsList = document.getElementById('resultsList');
-            resultsList.innerHTML = '';
-            const votes = JSON.parse(localStorage.getItem('votes')) || [];
-            votes.forEach(vote => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `Navn: ${vote.Navn}, E-post: ${vote['E-post']}, Stemte på: ${vote.Destinasjon}`;
-                resultsList.appendChild(listItem);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLoginState();
-            displayResults();
-        });
     </script>
 </body>
 </html>
