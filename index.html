@@ -97,34 +97,31 @@
             const destination = data.get('Destinasjon');
 
             if (name && destination) {
-                alert('Stemmen din er registrert for: ' + destination);
-
-                // Send the vote data to Google Sheets
-                const url = 'https://script.google.com/macros/s/AKfycbxOt4bT7m62uOeTqnVnNRIi89e0HP-WSRxEKXkTvv4mRm7NqX7GdNRo7ncILdyWSgmH/exec';
-                fetch(url, {
+                fetch('http://localhost:3000/proxy', {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({
                         Navn: name,
                         Destinasjon: destination
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                    })
                 })
                 .then(response => response.json())
-                .then(result => {
-                    console.log('Success:', result);
-                    if (result.result === 'success') {
+                .then(data => {
+                    if (data.result === 'success') {
                         document.getElementById('voteForm').style.display = 'none';
                         document.getElementById('thankYouMessage').style.display = 'block';
                     } else {
-                        alert('Wystąpił błąd: ' + result.message);
+                        alert('Błąd podczas głosowania: ' + data.message);
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('Wystąpił błąd: ' + error.message);
+                    console.error('Błąd:', error);
+                    alert('Błąd podczas głosowania. Spróbuj ponownie później.');
                 });
+            } else {
+                alert('Wypełnij wszystkie pola!');
             }
         }
     </script>
