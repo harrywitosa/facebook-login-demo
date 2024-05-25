@@ -71,64 +71,67 @@
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
     <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '1139701013935835', // Twój App ID
-          cookie     : true,
-          xfbml      : true,
-          version    : 'v10.0'
-        });
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '1139701013935835', // Twój App ID
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v10.0'
+            });
 
-        FB.AppEvents.logPageView();   
-        checkLoginState();
-      };
+            FB.AppEvents.logPageView();   
+            checkLoginState();
+        };
 
-      function checkLoginState() {
-        FB.getLoginStatus(function(response) {
-          statusChangeCallback(response);
-        });
-      }
-
-      function statusChangeCallback(response) {
-        if (response.status === 'connected') {
-          FB.api('/me?fields=name,email', function(response) {
-            document.getElementById('status').innerHTML = 'Hei, ' + response.name + '!';
-            document.getElementById('E-post').value = response.email;
-            document.getElementById('Navn').value = response.name;
-            document.getElementById('voteForm').style.display = 'block';
-            document.getElementById('logoutButton').style.display = 'block';
-            document.getElementById('fb-login-button').style.display = 'none';
-          });
-        } else {
-          document.getElementById('status').innerHTML = 'Vennligst logg inn for å delta i avstemningen.';
-          document.getElementById('voteForm').style.display = 'none';
-          document.getElementById('logoutButton').style.display = 'none';
-          document.getElementById('fb-login-button').style.display = 'block';
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
         }
-      }
 
-      function logout() {
-        FB.logout(function(response) {
-          document.getElementById('status').innerHTML = 'Du har logget ut.';
-          document.getElementById('voteForm').style.display = 'none';
-          document.getElementById('logoutButton').style.display = 'none';
-          document.getElementById('fb-login-button').style.display = 'block';
-        });
-      }
-
-      function detectMessenger() {
-        var ua = navigator.userAgent || navigator.vendor || window.opera;
-        return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
-      }
-
-      document.addEventListener('DOMContentLoaded', function() {
-        if (detectMessenger()) {
-          document.getElementById('messengerWarning').style.display = 'block';
-          document.getElementById('fb-login-button').style.display = 'none';
-        } else {
-          document.getElementById('fb-login-button').style.display = 'block';
+        function statusChangeCallback(response) {
+            console.log('FB statusChangeCallback', response);
+            if (response.status === 'connected') {
+                FB.api('/me?fields=name,email', function(response) {
+                    console.log('Successful login for: ', response);
+                    document.getElementById('status').innerHTML = 'Hei, ' + response.name + '!';
+                    document.getElementById('E-post').value = response.email;
+                    document.getElementById('Navn').value = response.name;
+                    document.getElementById('voteForm').style.display = 'block';
+                    document.getElementById('logoutButton').style.display = 'block';
+                    document.getElementById('fb-login-button').style.display = 'none';
+                });
+            } else {
+                console.log('Not logged in');
+                document.getElementById('status').innerHTML = 'Vennligst logg inn for å delta i avstemningen.';
+                document.getElementById('voteForm').style.display = 'none';
+                document.getElementById('logoutButton').style.display = 'none';
+                document.getElementById('fb-login-button').style.display = 'block';
+            }
         }
-      });
+
+        function logout() {
+            FB.logout(function(response) {
+                document.getElementById('status').innerHTML = 'Du har logget ut.';
+                document.getElementById('voteForm').style.display = 'none';
+                document.getElementById('logoutButton').style.display = 'none';
+                document.getElementById('fb-login-button').style.display = 'block';
+            });
+        }
+
+        function detectMessenger() {
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (detectMessenger()) {
+                document.getElementById('messengerWarning').style.display = 'block';
+                document.getElementById('fb-login-button').style.display = 'none';
+            } else {
+                document.getElementById('fb-login-button').style.display = 'block';
+            }
+        });
     </script>
 
     <div id="messengerWarning">
