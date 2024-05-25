@@ -141,7 +141,7 @@
             const appId = '1139701013935835'; // Twój App ID
             const redirectUri = 'https://harrywitosa.github.io/facebook-login-demo/';
             const state = 'randomState'; // Możesz użyć czegoś bardziej unikalnego
-            const scope = 'email';
+            const scope = 'public_profile,email';
 
             const authUrl = `https://www.facebook.com/v10.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`;
             window.location.href = authUrl;
