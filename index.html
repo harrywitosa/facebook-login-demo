@@ -108,13 +108,10 @@
                         Destinasjon: destination
                     }),
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-                        'Access-Control-Allow-Headers': 'Content-Type'
+                        'Content-Type': 'application/json'
                     }
                 })
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(result => {
                     console.log('Success:', result);
                     window.location.href = 'takk.html'; // Przekierowanie na stronę podziękowania
