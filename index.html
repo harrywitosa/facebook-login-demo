@@ -1,84 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WistLastOgBuss Volda</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      text-align: center;
-    }
-    #container {
-      margin: 0 auto;
-      max-width: 600px;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      background-color: #007BFF;
-      color: white;
-      padding: 10px;
-    }
-    select, input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 16px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>WistLastOgBuss Volda</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .title {
+            background-color: #1a73e8;
+            color: white;
+            padding: 20px;
+            width: 100%;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
-  <div id="container">
-    <h1>WistLastOgBuss Volda</h1>
-    <form id="voteForm">
-      <input type="text" id="name" placeholder="Navn" required>
-      <select id="destination">
-        <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer</option>
-        <!-- Dodaj inne opcje -->
-      </select>
-      <button type="button" onclick="submitVote()">Stem</button>
-    </form>
-  </div>
-  <script>
-    function submitVote() {
-      const name = document.getElementById('name').value;
-      const destination = document.getElementById('destination').value;
+    <div class="container">
+        <div class="title">
+            <h1>WistLastOgBuss Volda</h1>
+        </div>
+        <div class="form-container">
+            <p>Vennligst logg inn for å delta i avstemningen.</p>
+            <form id="voteForm">
+                <label for="name">Navn:</label><br>
+                <input type="text" id="name" name="name" required><br>
+                <label for="destination">Destinasjon:</label><br>
+                <select id="destination" name="destination" required>
+                    <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer</option>
+                    <option value="Andre destinasjoner">Andre destinasjoner</option>
+                </select><br><br>
+                <button type="button" onclick="submitVote()">Stem</button>
+            </form>
+            <p id="responseMessage"></p>
+        </div>
+    </div>
 
-      fetch('http://localhost:3000/proxy', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, destination })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.result === 'success') {
-          alert('Takk for stemmen din!');
-          window.location.href = 'thanks.html';
-        } else {
-          alert('Det oppsto en feil. Vennligst prøv igjen.');
+    <script>
+        function submitVote() {
+            const name = document.getElementById('name').value;
+            const destination = document.getElementById('destination').value;
+            const data = {
+                name: name,
+                destination: destination
+            };
+
+            fetch('http://localhost:3000/proxy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('responseMessage').textContent = data.result;
+                if (data.result === 'success') {
+                    window.location.href = 'https://harrywitosa.github.io/facebook-login-demo/takk.html';
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('responseMessage').textContent = 'Det oppsto en feil. Vennligst prøv igjen.';
+            });
         }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Det oppsto en feil. Vennligst prøv igjen.');
-      });
-    }
-  </script>
+    </script>
 </body>
 </html>
