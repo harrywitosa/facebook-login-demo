@@ -3,7 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vote</title>
+    <title>WistLastOgBuss Volda</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .thank-you {
+            display: none;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
     <script>
         async function submitVote() {
             const name = document.getElementById('name').value;
@@ -19,8 +64,8 @@
                 });
 
                 if (response.ok) {
-                    document.getElementById('voteForm').style.display = 'none';
-                    document.getElementById('thankYouMessage').style.display = 'block';
+                    document.getElementById('voteForm').classList.add('hidden');
+                    document.getElementById('thankYouMessage').classList.remove('hidden');
                 } else {
                     alert('Det oppsto en feil. Vennligst prøv igjen.');
                 }
@@ -32,18 +77,26 @@
     </script>
 </head>
 <body>
-    <div id="voteForm">
-        <input type="text" id="name" placeholder="Navn">
-        <select id="destination">
-            <option value="Volvo-museet i Göteborg">Volvo-museet i Göteborg</option>
-            <option value="Scania-museet i Södertälje">Scania-museet i Södertälje</option>
-            <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer</option>
-            <option value="Telemark Teknologisk Innovasjonspark i Skien">Telemark Teknologisk Innovasjonspark i Skien</option>
-        </select>
-        <button onclick="submitVote()">Stem</button>
+    <div class="header">
+        <h1>WistLastOgBuss Volda</h1>
     </div>
-    <div id="thankYouMessage" style="display:none;">
-        Takk for stemmen din!
+    <div class="container" id="voteForm">
+        <h2>Velg ditt reisemål</h2>
+        <p>Vennligst logg inn for å delta i avstemmingen.</p>
+        <input type="text" id="name" placeholder="Navn" required>
+        <br><br>
+        <select id="destination">
+            <option value="Volvo-museet i Göteborg">Volvo-museet i Göteborg - Museet viser historien til Volvo, inkludert personbiler, lastebiler, busser og anleggsmaskiner.</option>
+            <option value="Scania-museet i Södertälje">Scania-museet i Södertälje - Museet fokuserer på historien og utviklingen av Scania lastebiler og busser.</option>
+            <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer - Vegmuseum som viser historien til vegtransport i Norge.</option>
+            <option value="Telemark Teknologisk Innovasjonspark i Skien">Telemark Teknologisk Innovasjonspark i Skien - Innovasjonspark som samler bedrifter fra ulike sektorer, inkludert automotive, fokusert på utvikling av nye teknologier.</option>
+        </select>
+        <br><br>
+        <button class="button" onclick="submitVote()">Stem</button>
+    </div>
+    <div class="container thank-you" id="thankYouMessage">
+        <h2>Takk for stemmen din!</h2>
     </div>
 </body>
 </html>
+
