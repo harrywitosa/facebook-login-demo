@@ -1,56 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WistLastOgBuss Volda</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
             text-align: center;
-            margin: 0;
-            padding: 0;
+            background-color: #f0f0f0;
         }
         .container {
-            margin-top: 50px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
         }
-        .title {
-            background-color: #0044cc;
+        .header {
+            background-color: #007bff;
             color: white;
             padding: 20px;
-            margin-bottom: 20px;
             font-size: 24px;
             font-weight: bold;
         }
-        .error {
-            color: red;
-            margin-top: 10px;
+        .form-group {
+            margin: 15px 0;
         }
-        .thank-you {
-            display: none;
-            font-size: 18px;
-            color: green;
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="title">WistLastOgBuss Volda</div>
-        <p>Velg ditt reisemål</p>
-        <select id="destination">
-            <option value="Norsk vegmuseum i Lillehammer - Vegmuseum som viser historien til vegtransport i Norge.">Norsk vegmuseum i Lillehammer - Vegmuseum som viser historien til vegtransport i Norge.</option>
-            <option value="Kon-Tiki Museet i Oslo - Museet er dedikert til Thor Heyerdahls oppdagelser og ekspedisjoner.">Kon-Tiki Museet i Oslo - Museet er dedikert til Thor Heyerdahls oppdagelser og ekspedisjoner.</option>
-            <option value="Fløyen i Bergen - Fløyen er en av de mest kjente fjellene i Bergen, kjent for sine vakre utsikter.">Fløyen i Bergen - Fløyen er en av de mest kjente fjellene i Bergen, kjent for sine vakre utsikter.</option>
-        </select>
-        <br><br>
-        <button onclick="submitVote()">Stem</button>
-        <p class="error" id="error"></p>
-        <div class="thank-you" id="thank-you">Takk for stemmen din!</div>
+        <div class="header">
+            WistLastOgBuss Volda
+        </div>
+        <form id="voteForm">
+            <div class="form-group">
+                <label for="name">Navn</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="destination">Destinasjon</label>
+                <select id="destination" name="destination">
+                    <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer</option>
+                    <option value="Utdanningsaktiviteter">Utdanningsaktiviteter</option>
+                    <option value="Avslapning">Avslapning</option>
+                </select>
+            </div>
+            <button type="button" onclick="submitVote()">Stem</button>
+        </form>
     </div>
+
     <script>
-        function submitVote() {
+        async function submitVote() {
+            const name = document.getElementById('name').value;
             const destination = document.getElementById('destination').value;
-            fetch('http://localhost:3000/proxy', {
-                method: 'POST',
-                headers
+            const payload = {
+                name: name,
+                destination: destination
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/proxy', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('Takk for stemmen din!');
+                } else {
+                    alert('Det oppsto en feil. Vennligst prøv igjen.');
+                }
+            } catch (error) {
+                alert('Det oppsto en feil. Vennligst prøv igjen.');
+            }
+        }
+    </script>
+</body>
+</html>
