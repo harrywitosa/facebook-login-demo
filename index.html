@@ -1,93 +1,85 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WistLastOgBuss Volda</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-        }
-        .container {
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 500px;
-        }
-        .header {
-            background-color: #0066cc;
-            color: white;
-            padding: 20px;
-            border-radius: 8px 8px 0 0;
-        }
-        .description {
-            margin: 20px 0;
-        }
-        .vote-section {
-            margin: 20px 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WistLastOgBuss Volda</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+    #container {
+      margin: 0 auto;
+      max-width: 600px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>WistLastOgBuss Volda</h1>
-        </div>
-        <div class="description">
-            <p>Hvis du har problemer med å logge inn, <a href="#" onclick="openInBrowser()">klikk her for å åpne siden i nettleseren din.</a></p>
-        </div>
-        <div class="vote-section">
-            <select id="destination">
-                <option value="Volvo-museet i Göteborg">Volvo-museet i Göteborg</option>
-                <option value="Scania-museet i Södertälje">Scania-museet i Södertälje</option>
-                <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer</option>
-                <option value="Telemark Teknologisk Innovasjonspark i Skien">Telemark Teknologisk Innovasjonspark i Skien</option>
-            </select>
-            <br><br>
-            <input type="text" id="name" placeholder="Skriv inn navnet ditt">
-            <br><br>
-            <button onclick="submitVote()">Stem</button>
-        </div>
-        <div id="message"></div>
-    </div>
-    <script>
-        function openInBrowser() {
-            window.open(window.location.href, '_blank');
+  <div id="container">
+    <h1>WistLastOgBuss Volda</h1>
+    <form id="voteForm">
+      <input type="text" id="name" placeholder="Navn" required>
+      <select id="destination">
+        <option value="Norsk vegmuseum i Lillehammer">Norsk vegmuseum i Lillehammer</option>
+        <!-- Dodaj inne opcje -->
+      </select>
+      <button type="button" onclick="submitVote()">Stem</button>
+    </form>
+  </div>
+  <script>
+    function submitVote() {
+      const name = document.getElementById('name').value;
+      const destination = document.getElementById('destination').value;
+
+      fetch('http://localhost:3000/proxy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, destination })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.result === 'success') {
+          alert('Takk for stemmen din!');
+          // Przekierowanie na stronę podziękowania
+          window.location.href = 'thanks.html';
+        } else {
+          alert('Det oppsto en feil. Vennligst prøv igjen.');
         }
-
-        async function submitVote() {
-            const name = document.getElementById('name').value;
-            const destination = document.getElementById('destination').value;
-            const messageElement = document.getElementById('message');
-
-            if (!name || !destination) {
-                messageElement.innerHTML = 'Vennligst fyll ut alle felt.';
-                return;
-            }
-
-            try {
-                const response = await fetch('http://localhost:3000/proxy', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, destination })
-                });
-
-                if (response.ok) {
-                    messageElement.innerHTML = 'Takk for stemmen din!';
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            } catch (error) {
-                messageElement.innerHTML = 'Det oppsto en feil. Vennligst prøv igjen.';
-                console.error('Error:', error);
-            }
-        }
-    </script>
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Det oppsto en feil. Vennligst prøv igjen.');
+      });
+    }
+  </script>
 </body>
 </html>
